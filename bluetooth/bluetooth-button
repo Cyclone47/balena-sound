@@ -11,7 +11,7 @@ echo "in" > /sys/class/gpio/gpio17/direction
 
 # Set up GPIO 27 (bluetooth)
 echo "27" > /sys/class/gpio/export
-echo "in" > /sys/class/gpio/gpio23/direction
+echo "in" > /sys/class/gpio/gpio27/direction
 
 # Set up GPIO 22 (- volume)
 echo "22" > /sys/class/gpio/export
