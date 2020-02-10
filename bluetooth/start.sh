@@ -37,7 +37,7 @@ printf "discoverable on\npairable on\nexit\n" | bluetoothctl > /dev/null
 
 sleep 2
 rm -rf /var/run/bluealsa/
-/usr/bin/bluealsa -i hci0 -p a2dp-sink &
+/usr/bin/bluealsa -i hci0 -p a2dp-sink --a2dp-volume &
 
 hciconfig hci0 up
 hciconfig hci0 name "$BLUETOOTH_DEVICE_NAME"
@@ -60,4 +60,4 @@ fi
 
 sleep 2
 printf "Device is discoverable as \"%s\"\n" "$BLUETOOTH_DEVICE_NAME"
-exec /usr/bin/bluealsa-aplay --pcm-buffer-time=1000000 00:00:00:00:00:00
+exec /usr/bin/bluealsa-aplay --profile-a2dp --pcm-buffer-time=1000000 00:00:00:00:00:00
