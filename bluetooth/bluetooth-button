@@ -6,15 +6,24 @@ BUTTON_VOLUME=$(</usr/src/button_volume)
 SYSTEM_OUTPUT_VOLUME=$(</usr/src/system_output_volume)
 
 # Set up GPIO 17 (+ volume)
-echo "17" > /sys/class/gpio/export
+if [[ ! -d /sys/class/gpio/gpio17 ]]; then
+  echo "17" > /sys/class/gpio/export
+  sleep 1 
+fi
 echo "in" > /sys/class/gpio/gpio17/direction
 
 # Set up GPIO 27 (bluetooth)
-echo "27" > /sys/class/gpio/export
+if [[ ! -d /sys/class/gpio/gpio27 ]]; then
+  echo "27" > /sys/class/gpio/export
+  sleep 1 
+fi
 echo "in" > /sys/class/gpio/gpio27/direction
 
 # Set up GPIO 22 (- volume)
-echo "22" > /sys/class/gpio/export
+if [[ ! -d /sys/class/gpio/gpio22 ]]; then
+  echo "22" > /sys/class/gpio/export
+  sleep 1 
+fi
 echo "in" > /sys/class/gpio/gpio22/direction
 
 while : ; do
