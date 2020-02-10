@@ -58,9 +58,9 @@ if [ -f "/var/cache/bluetooth/reconnect_device" ]; then
   printf "connect %s\nexit\n" "$TRUSTED_MAC_ADDRESS" | bluetoothctl > /dev/null
 fi
 
+# Start gpio button service
+/usr/src/bluetooth-button &
+
 sleep 2
 printf "Device is discoverable as \"%s\"\n" "$BLUETOOTH_DEVICE_NAME"
 exec /usr/bin/bluealsa-aplay --profile-a2dp --pcm-buffer-time=1000000 00:00:00:00:00:00 &
-
-sleep 2
-bash /usr/src/bluetooth-button
