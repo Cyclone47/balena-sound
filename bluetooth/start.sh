@@ -20,7 +20,7 @@ printf "Connection notify volume is %s%%\n" "$CONNECTION_NOTIFY_VOLUME"
 BUTTON_VOLUME="${BUTTON_VOLUME:-75}"
 echo $BUTTON_VOLUME > /usr/src/button_volume
 printf "Button volume is %s%%\n" "$BUTTON_VOLUME"
-bash /usr/src/bluetooth_button &
+bash /usr/src/bluetooth-button &
 
 # Set the discoverable timeout here
 dbus-send --system --dest=org.bluez --print-reply /org/bluez/hci0 org.freedesktop.DBus.Properties.Set string:'org.bluez.Adapter1' string:'DiscoverableTimeout' variant:uint32:0 > /dev/null
