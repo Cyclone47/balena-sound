@@ -11,7 +11,7 @@ echo "in" > /sys/class/gpio/gpio17/direction
 
 # Set up GPIO 27 (bluetooth)
 echo "27" > /sys/class/gpio/export
-echo "in" > /sys/class/gpio/gpio73/direction
+echo "in" > /sys/class/gpio/gpio23/direction
 
 # Set up GPIO 22 (- volume)
 echo "22" > /sys/class/gpio/export
@@ -58,5 +58,7 @@ if [[ "$(cat /sys/class/gpio/gpio22/value)" == 1 ]]; then
   amixer sset Digital,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
   sleep 1
 fi
+
 fi
+
 done
