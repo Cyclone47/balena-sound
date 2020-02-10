@@ -1,5 +1,62 @@
 #!/usr/bin/env bash
 
-echo "23" > /sys/class/gpio/export
-echo "out" > /sys/class/gpio/gpio23/direction
-echo "1" > /sys/class/gpio/gpio23/value
+# Set up variables
+CONNECTION_NOTIFY_VOLUME=$(</usr/src/connection_notify_volume)
+
+SYSTEM_OUTPUT_VOLUME=$(</usr/src/system_output_volume)
+
+# Set up GPIO 17 (+ volume)
+echo "17" > /sys/class/gpio/export
+echo "in" > /sys/class/gpio/gpio17/direction
+
+# Set up GPIO 27 (bluetooth)
+echo "27" > /sys/class/gpio/export
+echo "in" > /sys/class/gpio/gpio73/direction
+
+# Set up GPIO 22 (- volume)
+echo "22" > /sys/class/gpio/export
+echo "in" > /sys/class/gpio/gpio22/direction
+
+while : ; do
+
+if [[ ! -z "$(echo "$(amixer -D bluealsa scontrols)" | sed -n " s,[^']*'\([^']*\).*,\1,p ")" ]]; then
+
+DEVICE="$(echo "$(amixer -D bluealsa scontrols)" | sed -n " s,[^']*'\([^']*\).*,\1,p ")"
+
+VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $4}' | tr -d '[]%')"
+
+# Volume up
+if [[ "$(cat /sys/class/gpio/gpio17/value)" == 1 ]]; then
+  TEMP_VOLUME=$(($VOLUME + 10))
+  if [[ "$TEMP_VOLUME" > 100 ]]; then
+    TEMP_VOLUME="100"
+  fi
+  printf "Setting bluetooth volume to: %s\n" "$TEMP_VOLUME"
+  amixer -D bluealsa sset "$DEVICE" $TEMP_VOLUME%
+  mplayer -volume $CONNECTION_NOTIFY_VOLUME /usr/src/sounds/click.mp3 -really-quiet > /dev/null 2>&1
+  amixer sset PCM,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
+  amixer sset Digital,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
+  sleep 1
+fi
+
+if [[ "$(cat /sys/class/gpio/gpio27/value)" == 1 ]]; then
+  # I will do it later
+fi
+
+VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $4}' | tr -d '[]%')"
+
+# Volume down
+if [[ "$(cat /sys/class/gpio/gpio22/value)" == 1 ]]; then
+  TEMP_VOLUME=$(($VOLUME - 10))
+  if [[ "$TEMP_VOLUME" < 0 ]]; then
+    TEMP_VOLUME="0"
+  fi
+  printf "Setting bluetooth volume to: %s\n" "$TEMP_VOLUME"
+  amixer -D bluealsa sset "$DEVICE" $TEMP_VOLUME%
+  mplayer -volume $CONNECTION_NOTIFY_VOLUME /usr/src/sounds/click.mp3 -really-quiet > /dev/null 2>&1
+  amixer sset PCM,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
+  amixer sset Digital,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
+  sleep 1
+fi
+fi
+done
