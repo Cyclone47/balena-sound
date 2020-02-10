@@ -39,9 +39,7 @@ if [[ "$(cat /sys/class/gpio/gpio17/value)" == 1 ]]; then
   sleep 1
 fi
 
-if [[ "$(cat /sys/class/gpio/gpio27/value)" == 1 ]]; then
-  # I will do this later
-fi
+# Here comes later the code for bluetooth
 
 VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $4}' | tr -d '[]%')"
 
