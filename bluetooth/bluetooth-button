@@ -32,11 +32,11 @@ if [[ ! -z "$(echo "$(amixer -D bluealsa scontrols)" | sed -n " s,[^']*'\([^']*\
 
 DEVICE="$(echo "$(amixer -D bluealsa scontrols)" | sed -n " s,[^']*'\([^']*\).*,\1,p ")"
 
-VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $4}' | tr -d '[]%')"
+VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $5}' | tr -d '[]%')"
 
 # Volume up
 if [[ "$(cat /sys/class/gpio/gpio17/value)" == 1 ]]; then
-  TEMP_VOLUME=$(($VOLUME + 10))
+  TEMP_VOLUME=$(expr '$VOLUME + 10')
   if [[ "$TEMP_VOLUME" > 100 ]]; then
     TEMP_VOLUME="100"
   fi
@@ -54,7 +54,7 @@ VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $4}' | tr -d '[]%
 
 # Volume down
 if [[ "$(cat /sys/class/gpio/gpio22/value)" == 1 ]]; then
-  TEMP_VOLUME=$(($VOLUME - 10))
+  TEMP_VOLUME=$(expr '$VOLUME - 10')
   if [[ "$TEMP_VOLUME" < 0 ]]; then
     TEMP_VOLUME="0"
   fi
