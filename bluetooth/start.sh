@@ -20,7 +20,6 @@ printf "Connection notify volume is %s%%\n" "$CONNECTION_NOTIFY_VOLUME"
 BUTTON_VOLUME="${BUTTON_VOLUME:-75}"
 echo $BUTTON_VOLUME > /usr/src/button_volume
 printf "Button volume is %s%%\n" "$BUTTON_VOLUME"
-bash /usr/src/bluetooth-button &
 
 # Set the discoverable timeout here
 dbus-send --system --dest=org.bluez --print-reply /org/bluez/hci0 org.freedesktop.DBus.Properties.Set string:'org.bluez.Adapter1' string:'DiscoverableTimeout' variant:uint32:0 > /dev/null
@@ -61,4 +60,7 @@ fi
 
 sleep 2
 printf "Device is discoverable as \"%s\"\n" "$BLUETOOTH_DEVICE_NAME"
-exec /usr/bin/bluealsa-aplay --profile-a2dp --pcm-buffer-time=1000000 00:00:00:00:00:00
+exec /usr/bin/bluealsa-aplay --profile-a2dp --pcm-buffer-time=1000000 00:00:00:00:00:00 &
+
+sleep 2
+bash /usr/src/bluetooth-button
