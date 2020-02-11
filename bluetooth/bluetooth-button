@@ -35,10 +35,7 @@ DEVICE="$(echo "$(amixer -D bluealsa scontrols)" | sed -n " s,[^']*'\([^']*\).*,
 # Volume up
 if [[ "$(cat /sys/class/gpio/gpio17/value)" == 1 ]]; then
   amixer -D bluealsa sset "$DEVICE" 10%+
-  mplayer -volume $BUTTON_VOLUME /usr/src/sounds/click.mp3 -really-quiet > /dev/null 2>&1
-  amixer sset PCM,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
-  amixer sset Digital,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
-  sleep 1
+  sleep 0.5
 fi
 
 # Here comes later the code for bluetooth
@@ -46,10 +43,7 @@ fi
 # Volume down
 if [[ "$(cat /sys/class/gpio/gpio22/value)" == 1 ]]; then
   amixer -D bluealsa sset "$DEVICE" 10%-
-  mplayer -volume $BUTTON_VOLUME /usr/src/sounds/click.mp3 -really-quiet > /dev/null 2>&1
-  amixer sset PCM,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
-  amixer sset Digital,0 $SYSTEM_OUTPUT_VOLUME% > /dev/null &
-  sleep 1
+  sleep 0.5
 fi
 
 fi
