@@ -58,8 +58,8 @@ if [ -f "/var/cache/bluetooth/reconnect_device" ]; then
   printf "connect %s\nexit\n" "$TRUSTED_MAC_ADDRESS" | bluetoothctl > /dev/null
 fi
 
-# Start gpio button service
-/usr/src/bluetooth-button &
+# Start gpio bluetooth control service
+/usr/src/bluetooth-control &
 
 sleep 2
 printf "Device is discoverable as \"%s\"\n" "$BLUETOOTH_DEVICE_NAME"
