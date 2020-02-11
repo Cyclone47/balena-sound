@@ -38,7 +38,7 @@ VOLUME_PARSED="$(echo "${VOLUME}" | head -1)"
 
 # Volume up
 if [[ "$(cat /sys/class/gpio/gpio17/value)" == 1 ]]; then
-  TEMP_VOLUME=$(expr "$VOLUME_PARSED + 10")
+  TEMP_VOLUME=$(expr $VOLUME_PARSED + 10)
   if [[ "$TEMP_VOLUME" > 100 ]]; then
     TEMP_VOLUME="100"
   fi
@@ -58,7 +58,7 @@ VOLUME_PARSED="$(echo "${VOLUME}" | head -1)"
 
 # Volume down
 if [[ "$(cat /sys/class/gpio/gpio22/value)" == 1 ]]; then
-  TEMP_VOLUME=$(expr "$VOLUME_PARSED - 10")
+  TEMP_VOLUME=$(expr $VOLUME_PARSED - 10)
   if [[ "$TEMP_VOLUME" < 0 ]]; then
     TEMP_VOLUME="0"
   fi
