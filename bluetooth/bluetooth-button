@@ -50,7 +50,7 @@ fi
 
 # Here comes later the code for bluetooth
 
-VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $4}' | tr -d '[]%')"
+VOLUME="$(amixer -D bluealsa get "$DEVICE" | awk '$0~/%/{print $5}' | tr -d '[]%')"
 
 # Volume down
 if [[ "$(cat /sys/class/gpio/gpio22/value)" == 1 ]]; then
